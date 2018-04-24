@@ -11,6 +11,7 @@ using System.Xml;
 using System.Xml.Linq;
 using System.Dynamic;
 using Word = Microsoft.Office.Interop.Word;
+using System.Text.RegularExpressions;
 
 namespace nauchka
 {
@@ -43,7 +44,7 @@ namespace nauchka
 
             dataGridView1.DataSource = lecturerData;
             dataGridView1.Columns["number"].HeaderText = "№";
-            dataGridView1.Columns["number"].Width = 100;
+            dataGridView1.Columns["number"].Width = 20;
             dataGridView1.Columns["topic"].HeaderText = "Тема";
             dataGridView1.Columns["topic"].Width = 250;
             dataGridView1.Columns["type"].HeaderText = "Тип";
@@ -143,23 +144,91 @@ namespace nauchka
             SetHeadings(tbl.Cell(1, 2), "Тема");
             SetHeadings(tbl.Cell(1, 3), "Тип");
             SetHeadings(tbl.Cell(1, 4), "Дата");
-            SetHeadings(tbl.Cell(1, 5), "Время занятий");
-            SetHeadings(tbl.Cell(1, 6), "Количество часов");
+            SetHeadings(tbl.Cell(1, 5), "Время");
+            SetHeadings(tbl.Cell(1, 6), "Кол. часов");
             SetHeadings(tbl.Cell(1, 7), "Подпись");
-            for (int i = 0; i < lecturerData.Rows.Count; i++)
+            int i;
+            for (i = 0; i < lecturerData.Rows.Count; i++)
             {
-                Word.Row newRow = wd.Tables[1].Rows.Add();
-                newRow.Range.Font.Bold = 0;
-                newRow.Range.ParagraphFormat.Alignment = Word.WdParagraphAlignment.wdAlignParagraphLeft;
-                newRow.Cells[1].Range.Text = lecturerData.Rows[i][0].ToString();
-                newRow.Cells[2].Range.Text = lecturerData.Rows[i][1].ToString();
-                newRow.Cells[3].Range.Text = lecturerData.Rows[i][2].ToString();
-                newRow.Cells[4].Range.Text = lecturerData.Rows[i][3].ToString();
-                newRow.Cells[5].Range.Text = lecturerData.Rows[i][4].ToString();
-                newRow.Cells[6].Range.Text = lecturerData.Rows[i][5].ToString();
-                newRow.Cells[7].Range.Text = lecturerData.Rows[i][6].ToString();
+                string s = lecturerData.Rows[i][3].ToString();
+                string[] w = s.Split('.');
+                string res = w[1];
+                if (res == curNumMonth)
+                {
+                    Word.Row newRow = wd.Tables[1].Rows.Add();
+                    newRow.Range.Font.Bold = 0;
+                    newRow.Range.ParagraphFormat.Alignment = Word.WdParagraphAlignment.wdAlignParagraphLeft;
+                    newRow.Cells[1].Range.Text = lecturerData.Rows[i][0].ToString();
+                    tbl.Columns[1].SetWidth(27, Word.WdRulerStyle.wdAdjustSameWidth);
+                    newRow.Cells[2].Range.Text = lecturerData.Rows[i][1].ToString();
+                    tbl.Columns[2].SetWidth(170, Word.WdRulerStyle.wdAdjustSameWidth);
+                    string typeOfLesson = lecturerData.Rows[i][2].ToString();
+                    if (typeOfLesson == "Управляемая самостоятельная работа")
+                    {
+                        newRow.Cells[3].Range.Text = "УСР";
+                    }
+                    else if (typeOfLesson == "Лабораторная работа")
+                    {
+                        newRow.Cells[3].Range.Text = "Лаб";
+                    }
+                    else newRow.Cells[3].Range.Text = lecturerData.Rows[i][2].ToString();
+                    tbl.Columns[3].SetWidth(60, Word.WdRulerStyle.wdAdjustSameWidth);
+                    newRow.Cells[4].Range.Text = lecturerData.Rows[i][3].ToString();
+                    tbl.Columns[4].SetWidth(65, Word.WdRulerStyle.wdAdjustSameWidth);
+                    newRow.Cells[5].Range.Text = lecturerData.Rows[i][4].ToString();
+                    tbl.Columns[5].SetWidth(44, Word.WdRulerStyle.wdAdjustSameWidth);
+                    newRow.Cells[6].Range.Text = lecturerData.Rows[i][5].ToString();
+                    tbl.Columns[6].SetWidth(40, Word.WdRulerStyle.wdAdjustSameWidth);
+                    newRow.Cells[7].Range.Text = lecturerData.Rows[i][6].ToString();
+                    tbl.Columns[7].SetWidth(60, Word.WdRulerStyle.wdAdjustSameWidth);
+                }
+            }
+            //i++;
+            //wd.Tables[1].Rows.Add();
+            //tbl.Rows[i].Cells[0].Merge(tbl.Rows[i].Cells[2]);
+        }
+        private string curNumMonth;
+        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string curItem = listBox1.SelectedItem.ToString();
+            if (curItem == "февраль")
+            {
+                curNumMonth = "02";
+            }
+            else if (curItem == "март")
+            {
+                curNumMonth = "03";
+            }
+            else if (curItem == "апрель")
+            {
+                curNumMonth = "04";
+            }
+            else if (curItem == "май")
+            {
+                curNumMonth = "05";
+            }
+            else if (curItem == "июнь")
+            {
+                curNumMonth = "06";
+            }
+            else if (curItem == "сентябрь")
+            {
+                curNumMonth = "09";
+            }
+            else if (curItem == "октябрь")
+            {
+                curNumMonth = "10";
+            }
+            else if (curItem == "ноябрь")
+            {
+                curNumMonth = "11";
+            }
+            else if (curItem == "декабрь")
+            {
+                curNumMonth = "12";
             }
         }
+
         static void SetHeadings(Word.Cell tblCell, string text)
         {
             tblCell.Range.Text = text;

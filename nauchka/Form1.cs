@@ -18,20 +18,15 @@ namespace nauchka
             InitializeComponent();
         }
 
-
         private void button2_Click(object sender, EventArgs e)
         {
             if (dataGridView1.SelectedRows != null)
             {
-
                 string prepodfile= dataGridView1.SelectedRows[0].Cells["filename"].Value.ToString();
                 label1.Text = prepodfile;
                 Group gr = new Group(label1.Text);
-                gr.Show();
-                
-            }
-            
-            
+                gr.Show();             
+            }        
         }
 
 
