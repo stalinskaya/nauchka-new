@@ -22,15 +22,3 @@ C:\Users\Янина\Desktop\nauchka-master\nauchka\obj\Debug\nauchka.csproj.Core
 C:\Users\Янина\Desktop\nauchka-master\nauchka\obj\Debug\nauchka.exe
 C:\Users\Янина\Desktop\nauchka-master\nauchka\obj\Debug\nauchka.pdb
 C:\Users\Янина\Desktop\nauchka-master\nauchka\obj\Debug\nauchka.csproj.ResolveComReference.cache
-E:\научка\nauchka-master\nauchka\bin\Debug\nauchka.exe.config
-E:\научка\nauchka-master\nauchka\obj\Debug\nauchka.csproj.ResolveComReference.cache
-E:\научка\nauchka-master\nauchka\obj\Debug\nauchka.exe
-E:\научка\nauchka-master\nauchka\obj\Debug\nauchka.pdb
-E:\научка\nauchka-master\nauchka\obj\Debug\nauchka.csprojResolveAssemblyReference.cache
-E:\научка\nauchka-master\nauchka\obj\Debug\nauchka.Form1.resources
-E:\научка\nauchka-master\nauchka\obj\Debug\nauchka.Group.resources
-E:\научка\nauchka-master\nauchka\obj\Debug\nauchka.Properties.Resources.resources
-E:\научка\nauchka-master\nauchka\obj\Debug\nauchka.Result.resources
-E:\научка\nauchka-master\nauchka\obj\Debug\nauchka.csproj.GenerateResource.Cache
-E:\научка\nauchka-master\nauchka\bin\Debug\nauchka.exe
-E:\научка\nauchka-master\nauchka\bin\Debug\nauchka.pdb

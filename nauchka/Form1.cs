@@ -26,8 +26,7 @@ namespace nauchka
 
                 string prepodfile= dataGridView1.SelectedRows[0].Cells["filename"].Value.ToString();
                 label1.Text = prepodfile;
-                 string lecturerName= dataGridView1.SelectedRows[0].Cells["name"].Value.ToString();
-                Group gr = new Group(label1.Text,lecturerName);
+                Group gr = new Group(label1.Text);
                 gr.Show();
                 
             }

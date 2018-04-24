@@ -13,12 +13,10 @@ namespace nauchka
     public partial class Group : Form
     {
         string x;
-        string lecName;
-        public Group(string y, string lecturerName)
+        public Group(string y )
         {
             InitializeComponent();
             x = y;
-            lecName = lecturerName;
         }
 
         private void Group_Load(object sender, EventArgs e)
@@ -36,10 +34,7 @@ namespace nauchka
 
                 string groupfile = dataGridView1.SelectedRows[0].Cells["number"].Value.ToString();
                 label2.Text = groupfile;
-                string course = dataGridView1.SelectedRows[0].Cells["course"].Value.ToString();
-                string spec = dataGridView1.SelectedRows[0].Cells["speciality"].Value.ToString();
-
-                Result r = new Result(label1.Text,label2.Text,course,lecName,spec);
+                Result r = new Result(label1.Text,label2.Text);
                 r.Show();
 
             }

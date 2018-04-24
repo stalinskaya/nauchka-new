@@ -16,16 +16,12 @@ namespace nauchka
 {
     public partial class Result : Form
     {
-        string n, f, courseNum;
-        string lecturerName, speciality;
-        public Result(string file, string num, string course,string lecName,string spec)
+        string n, f;
+        public Result(string file, string num)
         {
             InitializeComponent();
             n = num;
             f = file;
-            courseNum = course;
-            lecturerName = lecName;
-            speciality = spec;
         }
         DataTable lecturerData;
         private void CreateLecturerData()
@@ -43,7 +39,6 @@ namespace nauchka
         private void Result_Load(object sender, EventArgs e)
         {
             label1.Text = n;
-            //label2.Text = courseNum;
             CreateLecturerData();
 
             dataGridView1.DataSource = lecturerData;
@@ -73,6 +68,7 @@ namespace nauchka
 
             foreach (var elem in elemList)
             {
+
                 DataRow tempRow = lecturerData.NewRow();
                 tempRow["type"] = elem.Element("type").Value;
                 tempRow["date"] = elem.Element("date").Value;
@@ -82,15 +78,10 @@ namespace nauchka
                 i++;
                 lecturerData.Rows.Add(tempRow);
             }
-
-            string subject= dataGridView1.SelectedRows[0].Cells["subject"].Value.ToString();
-
         }
 
         private void button1_Click(object sender, EventArgs e)
-        { 
-            //Word.Application wa = new Word.Application();
-
+        {
             Word.Document wd = new Word.Document();
             wd.Activate();
             Object start = Type.Missing;
@@ -99,7 +90,7 @@ namespace nauchka
             wd.Content.Font.Name = "Times New Roman";
             wd.Content.ParagraphFormat.Alignment = Word.WdParagraphAlignment.wdAlignParagraphLeft;
             Word.Range rng = wd.Range(ref start, ref end);
-            //rng.Select();
+            
             Word.Paragraph wordparagraph = wd.Paragraphs.Add();
             wordparagraph.Range.Text = "Государственное учреждение образования \"Институт бизнеса и менеджмента технологий\" Белорусского государственного университета";
             wordparagraph.Alignment = Word.WdParagraphAlignment.wdAlignParagraphCenter;
@@ -111,17 +102,43 @@ namespace nauchka
             wordparagraph.Alignment = Word.WdParagraphAlignment.wdAlignParagraphCenter;
             wordparagraph.Range.InsertParagraphAfter();
 
-
             wordparagraph.Range.Text = "(учета проведенных занятий)";
             wordparagraph.Range.Font.Size = 14;
             wordparagraph.Range.Bold = 1;
             wordparagraph.Alignment = Word.WdParagraphAlignment.wdAlignParagraphCenter;
             wordparagraph.Range.InsertParagraphAfter();
 
+            wordparagraph.Range.Text = "Преподаватель";
+            wordparagraph.Range.Font.Size = 12;
+            wordparagraph.Range.Bold = 0;
+            wordparagraph.Alignment = Word.WdParagraphAlignment.wdAlignParagraphLeft;
+            wordparagraph.Range.InsertParagraphAfter();
+
+            wordparagraph.Range.Text = "Факультет";
+            wordparagraph.Range.InsertParagraphAfter();
+
+            wordparagraph.Range.Text = "Специальность";
+            wordparagraph.Range.InsertParagraphAfter();
+
+            wordparagraph.Range.Text = "Курс                                    \t\tГруппа             ";
+            wordparagraph.Range.InsertParagraphAfter();
+
+            wordparagraph.Range.Text = "Учебный год                                    \tСеместр             ";
+            wordparagraph.Range.InsertParagraphAfter();
+
+            wordparagraph.Range.Text = "Учебная дисциплина";
+            wordparagraph.Range.InsertParagraphAfter();
+
+            wordparagraph.Range.Text = "Количество часов по плану";
+            wordparagraph.Range.InsertParagraphAfter();
+
+            wordparagraph.Range.Text = "Форма занятий";
+            wordparagraph.Range.InsertParagraphAfter();
+
             rng.SetRange(rng.End, rng.End);
             Object defaultTableBehavior = Type.Missing;
             Object autoFitBehavior = Type.Missing;
-            Word.Table tbl = wd.Tables.Add(rng, 1, 7,ref defaultTableBehavior,ref autoFitBehavior );
+            Word.Table tbl = wd.Tables.Add(rng, 1, 7, ref defaultTableBehavior, ref autoFitBehavior);
             SetHeadings(tbl.Cell(1, 1), "№ п/п");
             SetHeadings(tbl.Cell(1, 2), "Тема");
             SetHeadings(tbl.Cell(1, 3), "Тип");
@@ -131,13 +148,13 @@ namespace nauchka
             SetHeadings(tbl.Cell(1, 7), "Подпись");
             for (int i = 0; i < lecturerData.Rows.Count; i++)
             {
-                Word.Row newRow = wd.Tables[1].Rows.Add(Type.Missing);
+                Word.Row newRow = wd.Tables[1].Rows.Add();
                 newRow.Range.Font.Bold = 0;
                 newRow.Range.ParagraphFormat.Alignment = Word.WdParagraphAlignment.wdAlignParagraphLeft;
                 newRow.Cells[1].Range.Text = lecturerData.Rows[i][0].ToString();
                 newRow.Cells[2].Range.Text = lecturerData.Rows[i][1].ToString();
                 newRow.Cells[3].Range.Text = lecturerData.Rows[i][2].ToString();
-                newRow.Cells[4].Range.Text = lecturerData.Rows[i][3].ToString(); ;
+                newRow.Cells[4].Range.Text = lecturerData.Rows[i][3].ToString();
                 newRow.Cells[5].Range.Text = lecturerData.Rows[i][4].ToString();
                 newRow.Cells[6].Range.Text = lecturerData.Rows[i][5].ToString();
                 newRow.Cells[7].Range.Text = lecturerData.Rows[i][6].ToString();
@@ -146,6 +163,9 @@ namespace nauchka
         static void SetHeadings(Word.Cell tblCell, string text)
         {
             tblCell.Range.Text = text;
+            tblCell.Range.Borders.Enable = 1;
+            tblCell.Range.ParagraphFormat.SpaceAfter = 0;
+            tblCell.Range.ParagraphFormat.SpaceBefore = 0;
             tblCell.Range.Borders.InsideColor = Word.WdColor.wdColorBlack;
             tblCell.Range.Borders.OutsideColor = Word.WdColor.wdColorBlack;
             tblCell.Range.ParagraphFormat.Alignment = Word.WdParagraphAlignment.wdAlignParagraphCenter;
